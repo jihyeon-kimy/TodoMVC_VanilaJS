@@ -76,16 +76,17 @@ const view = {
 		input.focus();
 	},
 
+	// Filter 관련
 	clearFilter: function () {
-		const oldSelectedFilter = document.querySelector(".selected");
-		oldSelectedFilter.removeAttribute("class");
+		const selectedFilter = document.querySelector(".selected");
+		selectedFilter.removeAttribute("class");
 	},
 
 	allFilter: function () {
 		this.clearFilter();
 
-		const newSelectedFilter = document.querySelector("[href='#/']");
-		newSelectedFilter.setAttribute("class", "selected");
+		const selectedFilter = document.querySelector("[href='#/']");
+		selectedFilter.setAttribute("class", "selected");
 
 		view.render(model.todos);
 	},
@@ -93,19 +94,21 @@ const view = {
 	activeFilter: function () {
 		this.clearFilter();
 
-		const newSelectedFilter = document.querySelector("[href='#/active']");
-		newSelectedFilter.setAttribute("class", "selected");
+		const selectedFilter = document.querySelector("[href='#/active']");
+		selectedFilter.setAttribute("class", "selected");
 
-		controller.activeTodos();
+		const active_todos = model.todos.filter((todo) => todo.active);
+		view.render(active_todos);
 	},
 
 	completeFilter: function () {
 		this.clearFilter();
 
-		const newSelectedFilter = document.querySelector("[href='#/completed']");
-		newSelectedFilter.setAttribute("class", "selected");
+		const selectedFilter = document.querySelector("[href='#/completed']");
+		selectedFilter.setAttribute("class", "selected");
 
-		controller.completeTodos();
+		const complete_todos = model.todos.filter((todo) => !todo.active);
+		view.render(complete_todos);
 	},
 };
 
@@ -142,20 +145,6 @@ const controller = {
 		);
 		model.todos = new_todos;
 		view.render(new_todos);
-	},
-
-	allTodos: function () {
-		view.render(model.todos);
-	},
-
-	activeTodos: function () {
-		const active_todos = model.todos.filter((todo) => todo.active);
-		view.render(active_todos);
-	},
-
-	completeTodos: function () {
-		const complete_todos = model.todos.filter((todo) => !todo.active);
-		view.render(complete_todos);
 	},
 };
 // })(window);
